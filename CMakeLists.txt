@@ -8,15 +8,16 @@ add_subdirectory(${JUCE_DIR} BINARY)
 
 juce_add_plugin(FunTableSynth
         FORMATS AU VST3 Standalone
-        PRODUCT_NAME "FUN_SHAPER"
-        DESCRIPTION "A wave shaper plugin you can customize with function expressions."
-        BUNDLE_ID "me.zxning.audio.fun_shaper"FunTableSynth
-        IS_SYNTH FALSE
+        PRODUCT_NAME "FunTableShaper"
+        COMPANY_NAME "ZX Studio"
+        DESCRIPTION "A wavetable synth plugin you can customize wavetable with function expressions."
+        BUNDLE_ID "me.zxning.audio.fun_synth"
+        IS_SYNTH TRUE
         IS_MIDI_EFFECT FALSE
-        NEEDS_MIDI_INPUT FALSE
+        NEEDS_MIDI_INPUT TRUE
         NEEDS_MIDI_OUTPUT FALSE
         PLUGIN_MANUFACTURER_CODE Zxst
-        PLUGIN_CODE Fnsp
+        PLUGIN_CODE Ftsn
         )
 
 juce_generate_juce_header(FunTableSynth)
@@ -25,7 +26,14 @@ file(GLOB Resource "resources/*")
 
 juce_add_binary_data(JuceBinary SOURCES "src/py/internal.py" "${Resource}")
 
-file(GLOB sources "src/*.h" "src/*.cpp" "src/ui/*.h" "src/ui/*.cpp")
+file(GLOB sources 
+        "src/*.h" 
+        "src/*.cpp" 
+        "src/ui/*.h" 
+        "src/ui/*.cpp" 
+        "src/synth/*.h" 
+        "src/synth/*.cpp"
+        )
 
 target_sources(FunTableSynth PRIVATE ${sources})
 

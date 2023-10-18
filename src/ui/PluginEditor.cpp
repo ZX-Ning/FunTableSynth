@@ -10,8 +10,9 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor(AudioPluginAudi
     // setLookAndFeel(&lAndF);
     addAndMakeVisible(mainUi);
     setResizable(true, false);
-    setSize(800, 350);
-    setResizeLimits(800,340, 1200,560);
+    setSize(1060, 520);
+    setResizeLimits(1050,500,
+                    1400,700);
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor() = default;
@@ -34,8 +35,9 @@ void AudioPluginAudioProcessorEditor::resized() {
                     .withMargin(10)
     };
     flex1.performLayout(getLocalBounds());
-    juce::String str;
+//    juce::String str;
 //    str << "Size: " << getWidth() << " x " << getHeight();
-    juce::Logger::outputDebugString(str);
+//    juce::Logger::outputDebugString(str);
+
 }
 

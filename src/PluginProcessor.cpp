@@ -1,7 +1,6 @@
 #include "PluginProcessor.h"
 
 #include "Controller.h"
-#include "WaveShaper.h"
 #include "ui/PluginEditor.h"
 
 //==============================================================================
@@ -14,7 +13,7 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
 #endif
                 .withOutput("Output", juce::AudioChannelSet::stereo(), true)
 #endif
-), controller(this), waveShaper(&controller) {
+), controller(this), synth(&controller){
 
 }
 
@@ -74,10 +73,7 @@ void AudioPluginAudioProcessor::changeProgramName(int index,
 //==============================================================================
 void AudioPluginAudioProcessor::prepareToPlay(double sampleRate,
                                               int samplesPerBlock) {
-    waveShaper.prepareToPlay(
-            sampleRate,
-            samplesPerBlock,
-            static_cast<uint32_t>(getTotalNumInputChannels()));
+    synth.prepare(sampleRate, uint32_t(samplesPerBlock), uint32_t(getTotalNumOutputChannels()));
 }
 
 void AudioPluginAudioProcessor::releaseResources() {
@@ -109,8 +105,8 @@ bool AudioPluginAudioProcessor::isBusesLayoutSupported(
 
 void AudioPluginAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer,
                                              juce::MidiBuffer &midiMessages) {
-    juce::ignoreUnused(midiMessages);                                           
-    waveShaper.processAudio(buffer);
+    buffer.clear();
+    synth.renderAudio(buffer, midiMessages, 0, buffer.getNumSamples());
 }
 
 //==============================================================================

@@ -2,7 +2,7 @@
 #define JUCE_PLUGIN_PROCESSOR_GEN_
 
 #include "Controller.h"
-#include "WaveShaper.h"
+#include "synth/FTSynth.h"
 #include <JuceHeader.h>
 
 
@@ -63,7 +63,7 @@ public:
 
 private:
     ZX::Controller controller;
-    ZX::WaveShaper waveShaper;
+    ZX::FTSynth synth;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPluginAudioProcessor)
 };

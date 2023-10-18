@@ -1,5 +1,5 @@
-#ifndef ZX_FUN_SHAPER_UI_HELPERS_H
-#define ZX_FUN_SHAPER_UI_HELPERS_H
+#ifndef ZX_FUN_TABLE_SYNTH_UI_HELPERS_H
+#define ZX_FUN_TABLE_SYNTH_UI_HELPERS_H
 
 #include <cstdint>
 #include <JuceHeader.h>
@@ -26,6 +26,26 @@ static inline T inRange(T num,T bottom, T top){
     return num;
 }
 
+static inline juce::Font getJBMonoFont(bool isBold) {
+    if (isBold) {
+        auto f = juce::Font{
+                juce::Typeface::createSystemTypefaceFor(
+                        BinaryData::JetBrainsMonoNLBold_ttf,
+                        BinaryData::JetBrainsMonoNLBold_ttfSize)};
+        f.setBold(true);
+        return f;
+    }
+
+    else {
+        auto f = juce::Font{
+                juce::Typeface::createSystemTypefaceFor(
+                        BinaryData::JetBrainsMonoNLRegular_ttf,
+                        BinaryData::JetBrainsMonoNLRegular_ttfSize)};
+        f.setBold(false);
+        return f;
+    }
 }
 
-#endif //ZX_FUN_SHAPER_UI_HELPERS_H
+}
+
+#endif //ZX_FUN_TABLE_SYNTH_UI_HELPERS_H
