@@ -1,0 +1,7 @@
+/.cache
+/.fleet
+/.idea
+/.vscode
+/build*
+/cmake-build*
+/.DS_STORE
