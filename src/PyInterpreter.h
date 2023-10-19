@@ -37,8 +37,8 @@ using PyObjPtr = std::unique_ptr<PyObject, PyObjDeleter>;
 class PyInterpreter final {
 private:
     const static char *pyCode;
-    PyObjPtr pMainModule;
-    PyObjPtr pGlobalDict;
+    PyObject *pMainModule;
+    PyObject *pGlobalDict;
     PyThreadState *_save;
     bool _isRunning;
 

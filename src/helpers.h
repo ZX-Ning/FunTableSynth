@@ -12,7 +12,7 @@ namespace ZX{
 
 constexpr double PI = 3.141592653589793;
 
-static juce::Colour colorFromHex(uint32_t hex){
+static inline juce::Colour colorFromHex(uint32_t hex){
     return juce::Colour::fromRGB(static_cast<uint8_t>(hex >> 16),
                                  static_cast<uint8_t>((hex & 0x00FF00) >> 8),
                                  static_cast<uint8_t>(hex & 0x0000FF));

@@ -67,13 +67,13 @@ std::string PyInterpreter::getAndGenErrMsg(const char *where) noexcept {
 
 PyInterpreter::PyInterpreter() : _isRunning(false) {
     Py_Initialize();
-    pMainModule.reset(PyImport_AddModule("__main__"));
-    pGlobalDict.reset(PyModule_GetDict(pMainModule.get()));
-    Py_INCREF(pGlobalDict.get());
+    pMainModule = PyImport_AddModule("__main__");
+    pGlobalDict = PyModule_GetDict(pMainModule);
+    Py_INCREF(pGlobalDict);
     PyObjPtr pCode{Py_CompileStringExFlags(BinaryData::internal_py, "internal_py_code",
                                            Py_file_input, nullptr, 2)};
     throwIfNull(pCode.get(), "compile");
-    PyObjPtr pEval{PyEval_EvalCode(pCode.get(), pGlobalDict.get(), pGlobalDict.get())};
+    PyObjPtr pEval{PyEval_EvalCode(pCode.get(), pGlobalDict, pGlobalDict)};
     throwIfNull(pCode.get(), "compile");
     _save = PyEval_SaveThread();
 }
@@ -102,7 +102,7 @@ std::vector<double> PyInterpreter::getPyFloatList(PyObject *pList) {
 
 PyObject *PyInterpreter::getObject(const char *name) {
     PyGilGuard gilGuard;
-    PyObject * obj = PyDict_GetItemString(pGlobalDict.get(), name);
+    PyObject * obj = PyDict_GetItemString(pGlobalDict, name);
 //    Py_INCREF(obj);
     return obj;
 }
@@ -112,12 +112,12 @@ void PyInterpreter::addFunction(const char *code) {
         stopCalc();
     }
     PyGilGuard guard;
-    if (PyDict_GetItemString(pGlobalDict.get(), "osc") != nullptr) {
-        PyDict_DelItemString(pGlobalDict.get(), "osc");
+    if (PyDict_GetItemString(pGlobalDict, "osc") != nullptr) {
+        PyDict_DelItemString(pGlobalDict, "osc");
     }
     PyObjPtr pCode{Py_CompileStringExFlags(code, "user_input_code", Py_file_input, nullptr, 2)};
     throwIfNull(pCode.get(), "compile");
-    PyObjPtr pEval{PyEval_EvalCode(pCode.get(), pGlobalDict.get(), pGlobalDict.get())};
+    PyObjPtr pEval{PyEval_EvalCode(pCode.get(), pGlobalDict, pGlobalDict)};
     throwIfNull(pCode.get(), "Eval code");
 }
 
