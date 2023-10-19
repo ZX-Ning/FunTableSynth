@@ -8,7 +8,7 @@ add_subdirectory(${JUCE_DIR} BINARY)
 
 juce_add_plugin(FunTableSynth
         FORMATS AU VST3 Standalone
-        PRODUCT_NAME "FunTableShaper"
+        PRODUCT_NAME "FunTable Synth"
         COMPANY_NAME "ZX Studio"
         DESCRIPTION "A wavetable synth plugin you can customize wavetable with function expressions."
         BUNDLE_ID "me.zxning.audio.fun_synth"
