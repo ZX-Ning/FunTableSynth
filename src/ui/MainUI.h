@@ -30,7 +30,6 @@ private:
     Controller *controller;
     SliderWithLabel gainSlider;
     juce::Label title;
-//    juce::Label gainLabel;
     juce::TextButton calcButton;
     juce::TextEditor errorMsg;
     juce::TextEditor codeEditor;

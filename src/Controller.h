@@ -36,7 +36,7 @@ public:
     Controller(Controller &&) = delete;
     static const char *defaultCode;
     static const char *defaultErrmsg;
-    UiState uiState{defaultCode, defaultErrmsg, true};
+    UiState uiState{defaultCode, defaultErrmsg, true, {}};
 
     bool setPyCode();
     void setTimeOut(double);
@@ -48,8 +48,6 @@ public:
     std::unique_ptr<juce::XmlElement> serializeState();
     void restoreState(juce::XmlElement &);
     APVTS *getApvts();
-
-
 };
 
 }// namespace ZX
