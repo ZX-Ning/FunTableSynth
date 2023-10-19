@@ -1,12 +1,16 @@
 #ifndef ZX_FUN_TABLE_SYNTH_UI_HELPERS_H
 #define ZX_FUN_TABLE_SYNTH_UI_HELPERS_H
 
+
+#include <math.h>
 #include <cstdint>
 #include <JuceHeader.h>
 #include <limits>
 #include <iostream>
 
 namespace ZX{
+
+constexpr double PI = 3.141592653589793;
 
 static juce::Colour colorFromHex(uint32_t hex){
     return juce::Colour::fromRGB(static_cast<uint8_t>(hex >> 16),

@@ -3,6 +3,7 @@
 
 #include <optional>
 #include <thread>
+#include <functional>
 #include "ThreadSafeQueue.h"
 
 

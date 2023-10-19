@@ -105,7 +105,7 @@ void MainUi::resized() {
 void MainUi::buttonClicked(juce::Button *button) {
     if (button == &calcButton) {
         if (controller->setPyCode()) {
-            controller->startCalc(-M_PI, M_PI, 0.005, 0);
+            controller->startCalc(-PI, PI, 0.005, 0);
         };
     }
 }

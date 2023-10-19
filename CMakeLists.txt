@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.26)
 project(FunTableSynth VERSION 0.0.0.1)
 set(CMAKE_CXX_STANDARD 17)
 

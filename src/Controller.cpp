@@ -195,7 +195,7 @@ void Controller::restoreState(juce::XmlElement &xmlTree) {
     auto newState = tree.getChild(0);
     apvts.replaceState(newState);
     if (tree.hasProperty("PYCODE")) {
-        auto newCode = juce::String(tree.getProperty("PYCODE")).toStdString();
+        std::string newCode = tree.getProperty("PYCODE").toString().toStdString();
         uiState.code = newCode;
         auto ui = getMainUi();
         if (ui != nullptr && uiState.code != newCode) {

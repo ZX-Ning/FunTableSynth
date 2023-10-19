@@ -1,11 +1,11 @@
 #include "ShaperGraph.h"
 #include "../helpers.h"
-#include <cmath>
+
 #include <vector>
 
 namespace ZX {
 
-static constexpr float FROM = float(-M_PI), TO = float(M_PI);
+static constexpr float FROM = float(-PI), TO = float(PI);
 
 ShaperGraph::ShaperGraph(std::vector<float> *_table)
         : table(_table) {}
@@ -14,8 +14,8 @@ ShaperGraph::ShaperGraph(std::vector<float> *_table)
 void ShaperGraph::paint(juce::Graphics &g) {
     width = static_cast<float>(getWidth());
     height = static_cast<float>(getHeight());
-    graphHeight = std::min(static_cast<float>(width * 2 / M_PI), height);
-    graphWidth = static_cast<float>(graphHeight * M_PI / 2);
+    graphHeight = std::fmin(static_cast<float>(width * 2 / PI), height);
+    graphWidth = static_cast<float>(graphHeight * PI / 2);
     //origin: (oX, oY)
     oX = width / 2;
     oY = height / 2 - (height - graphHeight) / 2;
