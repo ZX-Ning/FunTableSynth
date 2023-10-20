@@ -1,16 +1,14 @@
 #ifndef ZX_FUN_TABLE_SYNTH_CONTROLLER_H_
 #define ZX_FUN_TABLE_SYNTH_CONTROLLER_H_
 
-#include "ui/MainUI.h"
 #include "PyInterpreter.h"
-#include "ui/PluginEditor.h"
+#include "ui/MainUI.h"
 #include "ui/UiState.h"
 
+#include <JuceHeader.h>
 #include <functional>
 #include <mutex>
 #include <string>
-#include <JuceHeader.h>
-
 
 
 class AudioPluginAudioProcessor;
@@ -27,9 +25,10 @@ private:
     std::mutex lock;
     PyInterpreter py;
     double timeOut{2000};
-    bool _isChanged{true};   // check has the table changed after last get
+    bool _isChanged{true};// check has the table changed after last get
     MainUi *getMainUi() const;
     void tryUpdateMainUi() const;
+
 public:
     explicit Controller(AudioPluginAudioProcessor *_processor);
     Controller(Controller &) = delete;
@@ -38,10 +37,11 @@ public:
     static const char *defaultErrmsg;
     UiState uiState{defaultCode, defaultErrmsg, true, {}};
 
-    bool setPyCode();
+    bool setPyCode(const char *);
     void setTimeOut(double);
     void startCalc(double f, double t, double step, double p);
-    void updateTable(std::vector<double> &&);   //move table in
+    void setAndStartTable();
+    void updateTable(std::vector<double> &&);//move table in
     bool isChanged();
     std::vector<float> getTableCopyFloat(bool setChangedToFalse);
     std::vector<float> tryGetTableCopy();

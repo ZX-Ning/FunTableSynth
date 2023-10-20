@@ -11,7 +11,6 @@
 #include <vector>
 
 
-
 namespace ZX {
 const char *Controller::defaultCode = "#Enter expression here using python syntax\n"
                                       "#Your code in here will be warpped in a python function\n"
@@ -24,6 +23,8 @@ const char *Controller::defaultErrmsg = "Welcome to FUN TABLE SYNTH!\n"
                                         "(current time limit is set to 5 second)";
 
 const int TIME_OUT_MS = 5000;
+
+const float TABLE_STEP = 0.004f;
 
 using MsgMan = juce::MessageManager;
 using ListResult = PyInterpreter::ListResult;
@@ -50,8 +51,7 @@ static APVTS::ParameterLayout genParameters() {
                     "Sustain", 0.0f, 1.0f, 1.0f),
             std::make_unique<juce::AudioParameterFloat>(
                     juce::ParameterID("RELEASE", 1),
-                    "Release", 0.0f, 1000.0f, 0.5f)
-    };
+                    "Release", 0.0f, 1000.0f, 0.5f)};
 }
 
 MainUi *Controller::getMainUi() const {
@@ -65,19 +65,20 @@ MainUi *Controller::getMainUi() const {
 
 void Controller::tryUpdateMainUi() const {
     auto ui = getMainUi();
-    if (ui != nullptr){
+    if (ui != nullptr) {
         ui->restoreFromState(uiState);
     }
+    ui->repaint();
 }
 
 Controller::Controller(AudioPluginAudioProcessor *_processor)
-        : processor(_processor), apvts(*_processor, nullptr,
-                                       "PARAMETERS", genParameters()) {
+    : processor(_processor), apvts(*_processor, nullptr,
+                                   "PARAMETERS", genParameters()) {
 }
 
-bool Controller::setPyCode() {
+bool Controller::setPyCode(const char *code) {
     try {
-        std::stringstream iss{uiState.code};
+        std::stringstream iss{code};
         std::stringstream oss;
         oss << "def osc(x,p):\n";
         while (iss.good()) {
@@ -94,6 +95,12 @@ bool Controller::setPyCode() {
         tryUpdateMainUi();
         return false;
     }
+}
+
+void Controller::setAndStartTable() {
+    if (setPyCode(uiState.code.c_str())) {
+        startCalc(-PI, PI, TABLE_STEP, 0);
+    };
 }
 
 void Controller::setTimeOut(double _timeOut) { timeOut = _timeOut; }
@@ -197,8 +204,9 @@ void Controller::restoreState(juce::XmlElement &xmlTree) {
     if (tree.hasProperty("PYCODE")) {
         std::string newCode = tree.getProperty("PYCODE").toString().toStdString();
         uiState.code = newCode;
+        setAndStartTable();
         auto ui = getMainUi();
-        if (ui != nullptr && uiState.code != newCode) {
+        if (ui != nullptr) {
             MsgMan::callAsync([this, code = std::move(newCode)] {
                 tryUpdateMainUi();
             });
