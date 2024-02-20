@@ -1,10 +1,12 @@
 #ifndef ZX_ASYNCTHREAD_H
 #define ZX_ASYNCTHREAD_H
 
+#include <condition_variable>
+#include <mutex>
 #include <optional>
+#include <queue>
 #include <thread>
 #include <functional>
-#include "ThreadSafeQueue.h"
 
 
 namespace ZX {
@@ -13,9 +15,11 @@ class AsyncThread {
 private:
     using Action = std::function<void(void)>;
     using EventType = std::optional<Action>;
-    static std::unique_ptr<AsyncThread> _instance;
+    static std::unique_ptr<AsyncThread> instance;
     AsyncThread();
-    ThreadSafeQueue<EventType> events;
+    std::queue<EventType> events;
+    std::mutex lock;
+    std::condition_variable cv;
     std::thread t;
 public:
     ~AsyncThread();
